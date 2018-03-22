@@ -1,5 +1,5 @@
-# 拉取ubuntu14.04
-FROM daocloud.io/library/ubuntu:14.04
+# 拉取ubuntu16.04
+FROM daocloud.io/library/ubuntu:16.04
 
 # 维护者
 MAINTAINER kestrelBright <xuhupeng@gmail.com>
@@ -19,42 +19,8 @@ RUN apt-get update \
 RUN locale-gen en_US.utf8
 ENV LANG en_US.utf8
 ENV LANGUAGE en_US.utf8
-RUN add-apt-repository ppa:ondrej/php
-
-# Install and Test PHP
-RUN apt-get install --no-install-recommends -y \
-		curl ca-certificates \
-		php5-cli \
-		php5-dev \
-		php5-xdebug \
-		php5-apcu \
-		php5-geoip \
-		php5-fpm \
-		php5-json \
-		php5-memcached php5-memcache \
-		php5-mysql php5-pgsql \
-		php5-mongo \
-		php5-sqlite php5-sybase php5-interbase php5-odbc \
-		php5-gearman \
-		php5-mcrypt  \
-		php5-ldap \
-		php5-gmp  \
-		php5-intl \
-		php5-imagick php5-gd \
-		php5-imap \
-		php5-curl \
-		php5-oauth \
-		php5-redis \
-		php5-enchant \
-		php5-xsl \
-		php5-xmlrpc \
-		php5-tidy \
-		php5-recode \
-		php5-readline \
-		php5-pspell && \
-
-		php --version && \
-		php -m
+RUN add-apt-repository ppa:ondrej/php -y \
+    && apt-get update -y && apt-get install -y curl wget openssl php5.6 php5.6-cli php5.6-cgi php5.6-common php5.6-dev php5.6-xdebug php5.6-apcu php5.6-geoip php5.6-fpm php5.6-json php5.6-memcached php5.6-memcache php5.6-mysql php5.6-pgsql php5.6-mongo php5.6-sqlite php5.6-sybase php5.6-interbase php5.6-odbc php5.6-mcrypt php5.6-ldap php5.6-gmp php5.6-intl php5.6-imagick php5.6-gd php5.6-imap php5.6-curl php5.6-oauth php5.6-redis php5.6-enchant php5.6-xml php5.6-xmlrpc php5.6-tidy php5.6-recode php5.6-readline php5.6-zip php5.6-pspell php5.6-mbstring
 		
 # Tidy up
 RUN apt-get -y autoremove && apt-get clean && apt-get autoclean && \
@@ -69,5 +35,5 @@ RUN mkdir -p /usr/share/nginx/html
 VOLUME ["/usr/share/nginx/html"]
 # Set the work directory
 WORKDIR /usr/share/nginx/html
-CMD ["php5-fpm", "-F"]
+CMD ["php-fpm5.6", "-F"]
 EXPOSE 9000

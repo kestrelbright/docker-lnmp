@@ -1,0 +1,82 @@
+[20-Mar-2018 01:47:38] NOTICE: fpm is running, pid 1
+[20-Mar-2018 01:47:38] NOTICE: ready to handle connections
+[21-Mar-2018 07:46:23] NOTICE: fpm is running, pid 21
+[21-Mar-2018 07:46:23] NOTICE: ready to handle connections
+[21-Mar-2018 07:46:23] NOTICE: systemd monitor interval set to 10000ms
+[21-Mar-2018 07:49:44] NOTICE: configuration file /etc/php5/fpm/php-fpm.conf test is successful
+
+[21-Mar-2018 07:49:44] NOTICE: fpm is running, pid 23
+[21-Mar-2018 07:49:44] NOTICE: ready to handle connections
+[21-Mar-2018 07:49:44] NOTICE: systemd monitor interval set to 10000ms
+[21-Mar-2018 08:40:04] NOTICE: configuration file /etc/php5/fpm/php-fpm.conf test is successful
+
+[21-Mar-2018 08:40:04] NOTICE: fpm is running, pid 23
+[21-Mar-2018 08:40:04] NOTICE: ready to handle connections
+[21-Mar-2018 08:40:04] NOTICE: systemd monitor interval set to 10000ms
+[21-Mar-2018 08:54:47] NOTICE: configuration file /etc/php5/fpm/php-fpm.conf test is successful
+
+[21-Mar-2018 08:54:47] NOTICE: fpm is running, pid 24
+[21-Mar-2018 08:54:47] NOTICE: ready to handle connections
+[21-Mar-2018 08:54:47] NOTICE: systemd monitor interval set to 10000ms
+[21-Mar-2018 09:22:56] NOTICE: configuration file /etc/php5/fpm/php-fpm.conf test is successful
+
+[21-Mar-2018 09:22:56] NOTICE: fpm is running, pid 23
+[21-Mar-2018 09:22:56] NOTICE: ready to handle connections
+[21-Mar-2018 09:22:56] NOTICE: systemd monitor interval set to 10000ms
+[22-Mar-2018 01:54:00] NOTICE: configuration file /etc/php5/fpm/php-fpm.conf test is successful
+
+[22-Mar-2018 01:54:01] NOTICE: fpm is running, pid 23
+[22-Mar-2018 01:54:01] NOTICE: ready to handle connections
+[22-Mar-2018 01:54:01] NOTICE: systemd monitor interval set to 10000ms
+[22-Mar-2018 01:54:52] NOTICE: configuration file /etc/php5/fpm/php-fpm.conf test is successful
+
+[22-Mar-2018 01:54:52] NOTICE: fpm is running, pid 23
+[22-Mar-2018 01:54:52] NOTICE: ready to handle connections
+[22-Mar-2018 01:54:52] NOTICE: systemd monitor interval set to 10000ms
+[22-Mar-2018 01:55:28] NOTICE: fpm is running, pid 21
+[22-Mar-2018 01:55:28] NOTICE: ready to handle connections
+[22-Mar-2018 01:55:28] NOTICE: systemd monitor interval set to 10000ms
+[22-Mar-2018 02:14:07] NOTICE: fpm is running, pid 1
+[22-Mar-2018 02:14:07] NOTICE: ready to handle connections
+[22-Mar-2018 02:14:07] NOTICE: systemd monitor interval set to 10000ms
+[22-Mar-2018 02:16:59] NOTICE: Terminating ...
+[22-Mar-2018 02:16:59] NOTICE: exiting, bye-bye!
+[22-Mar-2018 02:17:02] NOTICE: fpm is running, pid 1
+[22-Mar-2018 02:17:02] NOTICE: ready to handle connections
+[22-Mar-2018 02:17:02] NOTICE: systemd monitor interval set to 10000ms
+[22-Mar-2018 02:23:39] NOTICE: Terminating ...
+[22-Mar-2018 02:23:39] NOTICE: exiting, bye-bye!
+[22-Mar-2018 02:23:41] NOTICE: fpm is running, pid 1
+[22-Mar-2018 02:23:41] NOTICE: ready to handle connections
+[22-Mar-2018 02:23:41] NOTICE: systemd monitor interval set to 10000ms
+[22-Mar-2018 02:32:59] NOTICE: Terminating ...
+[22-Mar-2018 02:32:59] NOTICE: exiting, bye-bye!
+[22-Mar-2018 02:33:01] NOTICE: fpm is running, pid 1
+[22-Mar-2018 02:33:01] NOTICE: ready to handle connections
+[22-Mar-2018 02:33:01] NOTICE: systemd monitor interval set to 10000ms
+[22-Mar-2018 02:36:13] NOTICE: fpm is running, pid 1
+[22-Mar-2018 02:36:13] NOTICE: ready to handle connections
+[22-Mar-2018 02:36:13] NOTICE: systemd monitor interval set to 10000ms
+[22-Mar-2018 02:39:07] NOTICE: Terminating ...
+[22-Mar-2018 02:39:07] NOTICE: exiting, bye-bye!
+[22-Mar-2018 02:39:10] NOTICE: fpm is running, pid 1
+[22-Mar-2018 02:39:10] NOTICE: ready to handle connections
+[22-Mar-2018 02:39:10] NOTICE: systemd monitor interval set to 10000ms
+[22-Mar-2018 03:10:43] NOTICE: Terminating ...
+[22-Mar-2018 03:10:43] NOTICE: exiting, bye-bye!
+[22-Mar-2018 07:19:40] NOTICE: fpm is running, pid 1
+[22-Mar-2018 07:19:40] NOTICE: ready to handle connections
+[22-Mar-2018 07:19:40] NOTICE: systemd monitor interval set to 10000ms
+[22-Mar-2018 08:07:42] NOTICE: Terminating ...
+[22-Mar-2018 08:07:42] NOTICE: exiting, bye-bye!
+[22-Mar-2018 08:07:44] NOTICE: fpm is running, pid 1
+[22-Mar-2018 08:07:44] NOTICE: ready to handle connections
+[22-Mar-2018 08:07:44] NOTICE: systemd monitor interval set to 10000ms
+[22-Mar-2018 08:43:24] NOTICE: Terminating ...
+[22-Mar-2018 08:43:24] NOTICE: exiting, bye-bye!
+[22-Mar-2018 08:43:26] ERROR: Unable to create the PID file (/run/php/php5.6-fpm.pid).: No such file or directory (2)
+[22-Mar-2018 08:43:26] ERROR: FPM initialization failed
+[22-Mar-2018 08:47:29] NOTICE: fpm is running, pid 1
+[22-Mar-2018 08:47:29] NOTICE: ready to handle connections
+[22-Mar-2018 08:47:29] NOTICE: systemd monitor interval set to 10000ms
+[22-Mar-2018 09:01:25] WARNING: [pool www] server reached pm.max_children setting (5), consider raising it
