@@ -27,7 +27,7 @@ services:
       - memcached
     build: ./php
     ports:
-      - "9000"    
+      - "9001"    
     volumes:
       - ~/Documents/docker-lnmp/php/php-fpm.conf:/usr/local/php/etc/php-fpm.conf
       - ~/Documents/docker-lnmp/php/www.conf:/usr/local/php/etc/php-fpm.d/www.conf
@@ -46,7 +46,7 @@ services:
       - ~/Documents/docker-lnmp/mysql/my.cnf:/etc/my.cnf
     environment:
       MYSQL_ROOT_PASSWORD: root
-    restart: always
+    #restart: always
     container_name: mysql
   # REDIS
   redis:
@@ -81,3 +81,20 @@ services:
      - "11211:11211"
     restart: always
     container_name: memcached
+  #php55
+  php55:
+    depends_on:
+      - mysql
+      - redis
+      - memcached
+    build: ./php55
+    ports:
+      - "9000"  
+    volumes:
+      - ~/Documents/docker-lnmp/php55/php-fpm.conf:/etc/php5/fpm/php-fpm.conf
+      - ~/Documents/docker-lnmp/php55/www.conf:/etc/php5/fpm/pool.d/www.conf
+      - ~/Documents/docker-lnmp/php55/php.ini:/etc/php5/fpm/php.ini
+      - ~/Documents/docker-lnmp/php55/log/php-fpm.log:/var/log/php5-fpm.log
+      - ~/Projects:/usr/share/nginx/html
+    #restart: always
+    container_name: php55
