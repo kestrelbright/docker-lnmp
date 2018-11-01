@@ -4,7 +4,7 @@ services:
   nginx:
     # 依赖php服务，意味着在启动nginx之前先启动php
     depends_on:
-      - php
+      - php56
       # nginx镜像的路径
     image: nginx:1.12.2
         # 这样使nginx容器把网站文件和目录存放到主机目录中，持久化和方便管理
@@ -20,25 +20,9 @@ services:
       - "443:443"
         # 容器名称
     container_name: nginx
-  php:
-    depends_on:
-      - mysql
-      - redis
-      - memcached
-    build: ./php
-    ports:
-      - "9001"    
-    volumes:
-      - ~/Documents/docker-lnmp/php/php-fpm.conf:/usr/local/php/etc/php-fpm.conf
-      - ~/Documents/docker-lnmp/php/www.conf:/usr/local/php/etc/php-fpm.d/www.conf
-      - ~/Documents/docker-lnmp/php/php.ini:/usr/local/php/etc/php.ini
-      - ~/Documents/docker-lnmp/php/log/php-fpm.log:/usr/local/php/var/log/php-fpm.log
-      - ~/Projects:/usr/share/nginx/html
-    restart: always
-    container_name: php
   # MySQL
   mysql:
-    image: mysql:5.6
+    image: mysql:5.7.4
     ports:
       - "127.0.0.1:3306:3306"
     volumes:
@@ -59,21 +43,21 @@ services:
     restart: always
     container_name: redis
   #elasticsearch
-  elasticsearch:
-    image: elasticsearch:2.4.5
-    ports:
-     - "9200:9200"
-    volumes: 
-     - ~/Documents/docker-lnmp/elasticsearch/data:/usr/local/elasticsearch/data
-    environment:
-      - cluster.name=docker-cluster
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    container_name: elasticsearch
+  # elasticsearch:
+  #   image: elasticsearch:2.4.5
+  #   ports:
+  #    - "9200:9200"
+  #   volumes: 
+  #    - ~/Documents/docker-lnmp/elasticsearch/data:/usr/local/elasticsearch/data
+  #   environment:
+  #     - cluster.name=docker-cluster
+  #     - bootstrap.memory_lock=true
+  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  #   ulimits:
+  #     memlock:
+  #       soft: -1
+  #       hard: -1
+  #   container_name: elasticsearch
   #memcached
   memcached:
     image: memcached:1.5.3
@@ -98,3 +82,20 @@ services:
       - ~/Projects:/usr/share/nginx/html
     #restart: always
     container_name: php56
+  #php72
+  php72:
+    depends_on:
+      - mysql
+      - redis
+      - memcached
+    build: ./php72
+    ports:
+      - "9002"  
+    volumes:
+      - ~/Documents/docker-lnmp/php72/php-fpm.conf:/etc/php/7.2/fpm/php-fpm.conf
+      - ~/Documents/docker-lnmp/php72/www.conf:/etc/php/7.2/fpm/pool.d/www.conf
+      - ~/Documents/docker-lnmp/php72/php.ini:/etc/php/7.2/fpm/php.ini
+      - ~/Documents/docker-lnmp/php72/log/php-fpm.log:/var/log/php7.2-fpm.log
+      - ~/Projects:/usr/share/nginx/html
+    #restart: always
+    container_name: php72  
