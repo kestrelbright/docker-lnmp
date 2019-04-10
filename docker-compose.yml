@@ -6,7 +6,7 @@ services:
     depends_on:
       - php56
       # nginx镜像的路径
-    image: nginx:1.12.2
+    image: 4037a5562b03
         # 这样使nginx容器把网站文件和目录存放到主机目录中，持久化和方便管理
     volumes:
       - ~/Projects:/usr/share/nginx/html
@@ -20,9 +20,11 @@ services:
       - "443:443"
         # 容器名称
     container_name: nginx
+    networks:
+      - code-network
   # MySQL
   mysql:
-    image: mysql:5.7.4
+    image: d9124e6c552f
     ports:
       - "127.0.0.1:3306:3306"
     volumes:
@@ -32,9 +34,11 @@ services:
       MYSQL_ROOT_PASSWORD: root
     #restart: always
     container_name: mysql
+    networks:
+      - code-network
   # REDIS
   redis:
-    image: redis:3.2.9
+    image: 3459037fcc3a
     ports:
       - "127.0.0.1:6379:6379"    
     volumes:
@@ -42,6 +46,8 @@ services:
       - ~/Documents/docker-lnmp/redis/redis.log:/usr/local/redis/redis.log
     restart: always
     container_name: redis
+    networks:
+      - code-network
   #elasticsearch
   # elasticsearch:
   #   image: elasticsearch:2.4.5
@@ -58,13 +64,36 @@ services:
   #       soft: -1
   #       hard: -1
   #   container_name: elasticsearch
+  # networks:
+  #     - code-network
   #memcached
   memcached:
-    image: memcached:1.5.3
+    image: 269b8cdf044f
     ports:
      - "11211:11211"
     restart: always
     container_name: memcached
+    networks:
+      - code-network
+  #php53
+  php53:
+    depends_on:
+      - mysql
+      - redis
+      - memcached
+    image: e8101d533db7
+    ports:
+      - "9000"  
+    volumes:
+      - ~/Documents/docker-lnmp/php53/php-fpm.conf:/usr/local/etc/php-fpm.conf
+      - ~/Documents/docker-lnmp/php53/www.conf:/usr/local/etc/php-fpm.d/www.conf
+      - ~/Documents/docker-lnmp/php53/php.ini:/usr/local/etc/php/php.ini
+      - ~/Documents/docker-lnmp/php53/log/php-fpm.log:/var/log/php-fpm.log
+      - ~/Projects:/usr/share/nginx/html
+    #restart: always
+    container_name: php53
+    networks:
+      - code-network
   #php56
   php56:
     depends_on:
@@ -73,7 +102,7 @@ services:
       - memcached
     build: ./php56
     ports:
-      - "9000"  
+      - "9001"  
     volumes:
       - ~/Documents/docker-lnmp/php56/php-fpm.conf:/etc/php/5.6/fpm/php-fpm.conf
       - ~/Documents/docker-lnmp/php56/www.conf:/etc/php/5.6/fpm/pool.d/www.conf
@@ -82,6 +111,27 @@ services:
       - ~/Projects:/usr/share/nginx/html
     #restart: always
     container_name: php56
+    networks:
+      - code-network
+  #php70
+  php70:
+    depends_on:
+      - mysql
+      - redis
+      - memcached
+    build: ./php70
+    ports:
+      - "9002"  
+    volumes:
+      - ~/Documents/docker-lnmp/php70/php-fpm.conf:/etc/php/7.0/fpm/php-fpm.conf
+      - ~/Documents/docker-lnmp/php70/www.conf:/etc/php/7.0/fpm/pool.d/www.conf
+      - ~/Documents/docker-lnmp/php70/php.ini:/etc/php/7.0/fpm/php.ini
+      - ~/Documents/docker-lnmp/php70/log/php-fpm.log:/var/log/php7.0-fpm.log
+      - ~/Projects:/usr/share/nginx/html
+    #restart: always
+    container_name: php70
+    networks:
+      - code-network
   #php72
   php72:
     depends_on:
@@ -90,7 +140,7 @@ services:
       - memcached
     build: ./php72
     ports:
-      - "9002"  
+      - "9003"  
     volumes:
       - ~/Documents/docker-lnmp/php72/php-fpm.conf:/etc/php/7.2/fpm/php-fpm.conf
       - ~/Documents/docker-lnmp/php72/www.conf:/etc/php/7.2/fpm/pool.d/www.conf
@@ -98,4 +148,9 @@ services:
       - ~/Documents/docker-lnmp/php72/log/php-fpm.log:/var/log/php7.2-fpm.log
       - ~/Projects:/usr/share/nginx/html
     #restart: always
-    container_name: php72  
+    container_name: php72
+    networks:
+      - code-network
+networks:
+    code-network:
+        driver: bridge

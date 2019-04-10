@@ -30,10 +30,11 @@ RUN apt-get -y autoremove && apt-get clean && apt-get autoclean && \
 RUN curl https://getcomposer.org/installer | php -- && mv composer.phar /usr/local/bin/composer && chmod +x /usr/local/bin/composer
 
 RUN mkdir -p /usr/share/nginx/html
+RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
 # Allow mounting files
 VOLUME ["/usr/share/nginx/html"]
 # Set the work directory
 WORKDIR /usr/share/nginx/html
 CMD ["php-fpm5.6", "-F"]
-EXPOSE 9000
+EXPOSE 9001
