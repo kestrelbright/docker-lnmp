@@ -1,0 +1,264 @@
+version: '3.4'
+# 定义四个服务nginx,php,mysql,redis
+services:
+  nginx:
+    # 依赖php服务，意味着在启动nginx之前先启动php
+    depends_on:
+      - php56
+      # nginx镜像的路径
+    image: nginx:alpine
+        # 这样使nginx容器把网站文件和目录存放到主机目录中，持久化和方便管理
+    volumes:
+      - ~/Projects:/usr/share/nginx/html
+      - /yourHostComputerDirectory/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - /yourHostComputerDirectory/nginx/log:/var/log/nginx
+        # nginx意外退出时自动重启
+    # restart: always
+        # 映射80和443端口
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8095:8095"
+        # 容器名称
+    logging:
+      options:
+        max-size: "100mb"
+        max-file: "10"
+    container_name: nginx
+    restart: always
+    networks:
+      - code-network
+  # MySQL
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "127.0.0.1:3306:3306"
+    volumes:
+      - /yourHostComputerDirectory/mysql/data:/var/lib/mysql
+      - /yourHostComputerDirectory/mysql/my.cnf:/etc/my.cnf
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    restart: always
+    container_name: mysql
+    networks:
+      - code-network
+  # REDIS
+  redis:
+    image: redis:alpine
+    ports:
+      - "127.0.0.1:6379:6379"    
+    volumes:
+      - /yourHostComputerDirectory/redis/redis.conf:/usr/local/redis/redis.conf
+      - /yourHostComputerDirectory/redis/redis.log:/usr/local/redis/redis.log
+    restart: always
+    container_name: redis
+    networks:
+      - code-network
+  elasticsearch
+  elasticsearch:
+    image: elasticsearch:2.4.5
+    ports:
+     - "9200:9200"
+    volumes: 
+     - /yourHostComputerDirectory/elasticsearch/data:/usr/local/elasticsearch/data
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    container_name: elasticsearch
+  networks:
+      - code-network
+  memcached
+  memcached:
+    image: memcached:alpine
+    ports:
+     - "11211:11211"
+    restart: always
+    container_name: memcached
+    networks:
+      - code-network
+  # php53
+  php53:
+    depends_on:
+      - mysql
+      - redis
+    image: xuhupeng/php-fpm:php53
+    ports:
+      - "9000"  
+    volumes:
+      - /yourHostComputerDirectory/php53/php-fpm.conf:/usr/local/etc/php/php-fpm.conf
+      - /yourHostComputerDirectory/php53/www.conf:/usr/local/etc/php-fpm.d/www.conf
+      - /yourHostComputerDirectory/php53/php.ini:/usr/local/etc/php/php.ini
+      - /yourHostComputerDirectory/php53/log/php-fpm.log:/var/log/php-fpm.log
+      - ~/Projects:/usr/share/nginx/html
+    restart: always
+    container_name: php53
+    networks:
+      - code-network
+  #php56
+  php56:
+    depends_on:
+      - mysql
+      - redis
+    build: ./php56
+    ports:
+      - "9001"  
+    volumes:
+      - /yourHostComputerDirectory/php56/php-fpm.conf:/etc/php/5.6/fpm/php-fpm.conf
+      - /yourHostComputerDirectory/php56/www.conf:/etc/php/5.6/fpm/pool.d/www.conf
+      - /yourHostComputerDirectory/php56/php.ini:/etc/php/5.6/fpm/php.ini
+      - /yourHostComputerDirectory/php56/log/php-fpm.log:/var/log/php5.6-fpm.log
+      - ~/Projects:/usr/share/nginx/html
+    restart: always
+    container_name: php56
+    networks:
+      - code-network
+  #php70
+  php70:
+    depends_on:
+      - mysql
+      - redis
+    build:
+      context: ./php70
+      network: host 
+    ports:
+      - "9002"  
+    volumes:
+      - /yourHostComputerDirectory/php70/php-fpm.conf:/etc/php/7.0/fpm/php-fpm.conf
+      - /yourHostComputerDirectory/php70/www.conf:/etc/php/7.0/fpm/pool.d/www.conf
+      - /yourHostComputerDirectory/php70/php.ini:/etc/php/7.0/fpm/php.ini
+      - /yourHostComputerDirectory/php70/log/php-fpm.log:/var/log/php7.0-fpm.log
+      - ~/Projects:/usr/share/nginx/html
+    restart: always
+    container_name: php70
+    networks:
+      - code-network
+  #php72
+  php72:
+    depends_on:
+      - mysql
+      - redis
+    build: 
+      context: ./php72
+      network: host
+    ports:
+      - "9003"  
+    volumes:
+      - /yourHostComputerDirectory/php72/php-fpm.conf:/etc/php/7.2/fpm/php-fpm.conf
+      - /yourHostComputerDirectory/php72/www.conf:/etc/php/7.2/fpm/pool.d/www.conf
+      - /yourHostComputerDirectory/php72/php.ini:/etc/php/7.2/fpm/php.ini
+      - /yourHostComputerDirectory/php72/log/php-fpm.log:/var/log/php7.2-fpm.log
+      - ~/Projects:/usr/share/nginx/html
+    restart: always
+    container_name: php72
+    networks:
+      - code-network
+  #php74
+  php74:
+    depends_on:
+      - mysql
+      - redis
+    build: ./php74
+    ports:
+      - "9004"  
+    volumes:
+      - /yourHostComputerDirectory/php74/php-fpm.conf:/usr/local/etc/php-fpm.conf
+      - /yourHostComputerDirectory/php74/www.conf:/usr/local/etc/php-fpm.d/www.conf
+      - /yourHostComputerDirectory/php74/php.ini:/usr/local/etc/php/php.ini
+      - /yourHostComputerDirectory/php74/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
+      - /yourHostComputerDirectory/php74/log/php-fpm.log:/var/log/php-fpm.log
+      - ~/Projects:/usr/share/nginx/html
+    restart: always
+    container_name: php74
+    networks:
+      - code-network
+  #php80
+  php80:
+    depends_on:
+      - mysql
+      - redis
+    build: ./php80
+    ports:
+      - "9005"  
+    volumes:
+      - /yourHostComputerDirectory/php80/php-fpm.conf:/usr/local/etc/php-fpm.conf
+      - /yourHostComputerDirectory/php80/www.conf:/usr/local/etc/php-fpm.d/www.conf
+      - /yourHostComputerDirectory/php80/php.ini:/usr/local/etc/php/php.ini
+      - /yourHostComputerDirectory/php80/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
+      - /yourHostComputerDirectory/php80/log/access.log:/var/log/access.log
+      - /yourHostComputerDirectory/php80/log/error.log:/var/log/error.log
+      - ~/Projects:/usr/share/nginx/html
+    restart: always
+    container_name: php80
+    networks:
+      - code-network
+  #php81
+  php81:
+    depends_on:
+      - mysql
+      - redis
+    build: ./php81
+    ports:
+      - "9006"  
+    volumes:
+      - /yourHostComputerDirectory/php81/php-fpm.conf:/usr/local/etc/php-fpm.conf
+      - /yourHostComputerDirectory/php81/www.conf:/usr/local/etc/php-fpm.d/www.conf
+      - /yourHostComputerDirectory/php81/php.ini:/usr/local/etc/php/php.ini
+      - /yourHostComputerDirectory/php81/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
+      - /yourHostComputerDirectory/php81/log/php-fpm.log:/var/log/php-fpm.log
+      - ~/Projects:/usr/share/nginx/html
+    restart: always
+    container_name: php81
+    networks:
+      - code-network
+  nacos:
+    container_name: nacos
+    image: nacos/nacos-server
+    build:
+      context: ./nacos
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    environment:
+      - MODE=standalone
+      - JVM_XMS=256m
+      - JVM_XMX=256m
+      - JVM_XMN=64m
+    volumes:
+      - /yourHostComputerDirectory/nacos/logs:/home/nacos/logs
+      - /yourHostComputerDirectory/nacos/conf/application.properties:/home/nacos/conf/application.properties
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+      - "9849:9849"
+    depends_on:
+      - mysql
+    restart: always
+    networks:
+      - code-network
+  # rabbitmq:
+    container_name: rabbitmq
+    build: ./rabbitmq
+    volumes:
+      - /yourHostComputerDirectory/rabbitmq/etc/:/etc/rabbitmq/
+      - /yourHostComputerDirectory/rabbitmq/logs/:/var/log/rabbitmq/
+      - /yourHostComputerDirectory/rabbitmq/data/:/var/lib/rabbitmq/
+      - /yourHostComputerDirectory/rabbitmq/plugins/:/plugins/
+    # environment:
+    #   - RABBITMQ_ERLANG_COOKIE=rabbitmq_cookie1
+    #   - RABBITMQ_DEFAULT_USER=root
+    #   - RABBITMQ_DEFAULT_PASS=root
+    ports:
+      - "15672:15672"
+      - "15673:15673"
+    restart: always
+    networks:
+      - code-network
+networks:
+    code-network:
+        driver: bridge
