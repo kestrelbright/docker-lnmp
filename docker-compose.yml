@@ -242,7 +242,8 @@ services:
     restart: always
     networks:
       - code-network
-  #rabbitmq:
+  #rabbitmq
+  rabbitmq:
     container_name: rabbitmq
     build: ./rabbitmq
     volumes:
