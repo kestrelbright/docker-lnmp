@@ -72,6 +72,19 @@ services:
     container_name: elasticsearch
   networks:
       - code-network
+  #kibana
+  kibana:
+   image: kibana:7.17.7
+   depends_on:
+     - elasticsearch
+   ports:
+     - 5601:5601
+   container_name: kibana
+   volumes:
+     - ~/yourHostComputerDirectory/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
+   restart: always
+   networks:
+     - code-network
   #memcached
   memcached:
     image: memcached:alpine
@@ -213,6 +226,25 @@ services:
       - ~/Projects:/usr/share/nginx/html
     restart: always
     container_name: php81
+    networks:
+      - code-network
+  #php82
+  php82:
+    depends_on:
+      - mysql
+      - redis
+    build: ./php82
+    ports:
+      - "9007"
+    volumes:
+      - ~/yourHostComputerDirectory/php82/php-fpm.conf:/usr/local/etc/php-fpm.conf
+      - ~/yourHostComputerDirectory/php82/www.conf:/usr/local/etc/php-fpm.d/www.conf
+      - ~/yourHostComputerDirectory/php82/php.ini:/usr/local/etc/php/php.ini
+      - ~/yourHostComputerDirectory/php82/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
+      - ~/yourHostComputerDirectory/php82/log:/var/log
+      - ~/Projects:/usr/share/nginx/html
+    restart: always
+    container_name: php82
     networks:
       - code-network
   #nacos
