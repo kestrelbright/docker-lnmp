@@ -17,61 +17,42 @@ ENV PHP_MAX_POST 100M
 #基础依赖
 
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories && \
-
   apk update && \
-
-  apk add --no-cache tzdata curl zip libzip-dev && \
-
+  apk add --no-cache autoconf g++ make tzdata curl zip libzip-dev freetype-dev libjpeg-turbo-dev libpng-dev imagemagick imagemagick-libs imagemagick-dev libxml2-dev icu-dev && \
   cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
-
   echo "${TIMEZONE}" > /etc/timezone && \
-
   apk --update --repository=http://dl-4.alpinelinux.org/alpine/edge/testing add \
-
-    php7-common php7-intl php7-gd php7-mcrypt php7-openssl \
-
+    php7-common php7-gd php7-mcrypt php7-openssl \
     php7-gmp php7-json php7-dom php7-pdo php7-zip \
-
     php7-zlib php7-mysqli php7-bcmath php7-pdo_mysql php7-pgsql \
-
     php7-pdo_pgsql php7-gettext \
-
     php7-bz2 php7-iconv php7-curl php7-ctype php7-fpm \
-
-    php7-mbstring php7-session php7-phar curl curl-dev postgresql-dev \
-
+    php7-mbstring php7-session php7-xml php7-simplexml php7-tokenizer php7-imagick php7-phar curl curl-dev postgresql-dev php7-pcntl \
     ## 如果使用swoole  需要取消下行注释
 
     #hiredis-dev libmcrypt-dev gmp-dev icu-dev linux-headers musl --virtual .phpize-deps $PHPIZE_DEPS \
 
     tzdata && \
-
     php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
-
     php composer-setup.php && \
-
     php -r "unlink('composer-setup.php');" && \
-
     mv composer.phar /usr/local/bin/composer && \
-
     composer self-update && \
-
     sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" /etc/php7/php-fpm.conf && \
-
     sed -i -e "s/listen\s*=\s*127.0.0.1:9004/listen = 9004/g" /etc/php7/php-fpm.d/www.conf && \
-
     sed -i "s|;date.timezone =.*|date.timezone = ${TIMEZONE}|" /etc/php7/php.ini && \
-
     mkdir -p /usr/src/php/ext/redis && \
-
     curl -L https://github.com/phpredis/phpredis/archive/refs/tags/3.1.4.tar.gz | tar xvz -C /usr/src/php/ext/redis --strip 1 && \
-
     echo 'redis' >> /usr/src/php-available-exts && \
-    
-    docker-php-ext-install redis pgsql pdo pdo_mysql pdo_pgsql zip && \
+    docker-php-ext-install redis pgsql pdo pdo_mysql pdo_pgsql zip iconv soap sockets exif bcmath pcntl intl mysqli \
+    && docker-php-ext-configure gd --with-jpeg --with-freetype \
+    && docker-php-ext-install gd \
+    && docker-php-ext-install zip \
+    && docker-php-ext-enable mysqli \
+    &&  rm -rf /var/cache/apk/*
 
-      rm -rf /var/cache/apk/*
-
+RUN printf "\n" | pecl install imagick && \
+    docker-php-ext-enable --ini-name 20-imagick.ini imagick
 # 如需安装swoole，取消以下注释
 
 #RUN \
